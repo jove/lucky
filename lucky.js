@@ -1,15 +1,28 @@
 if (Meteor.isClient) {
-  Template.hello.greeting = function () {
-    return "Welcome to lucky.";
-  };
+  var Router = Backbone.Router.extend({
+    routes: {
+      "":                 "main", //this will be http://your_domain/
+      "m":             "mobile"  // http://your_domain/help
+    },
 
-  Template.hello.events({
-    'click input' : function () {
-      // template data, if any, is available in 'this'
-      if (typeof console !== 'undefined')
-        console.log("You pressed the button");
+    main: function() {
+      console.log("this is main page");
+      Session.set("mobileUI", false);
+    },
+
+    mobile: function() {
+      console.log("this is mobile page");
+      Session.set("mobileUI", true);
     }
   });
+  var app = new Router;
+  Meteor.startup(function () {
+    Backbone.history.start({pushState: true});
+  });
+
+  Template.main.mobileUI = function () {
+    return Session.get("mobileUI");
+  };
 }
 
 if (Meteor.isServer) {
