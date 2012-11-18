@@ -1,3 +1,5 @@
+Messages = new Meteor.Collection("messages");
+
 if (Meteor.isClient) {
   var Router = Backbone.Router.extend({
     routes: {
@@ -22,6 +24,18 @@ if (Meteor.isClient) {
 
   Template.main.mobileUI = function () {
     return Session.get("mobileUI");
+  };
+
+  Template.main.events({
+    'click input' : function () {
+      Messages.insert({msg: "Hello from mobile UI at "+new Date()});
+    }
+  });
+
+  Template.main.messageFromMobile = function () {
+    var allMsg=Messages.find().fetch();
+    if(allMsg.length==0) return ""
+    return allMsg[allMsg.length-1].msg;
   };
 }
 
