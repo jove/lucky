@@ -27,7 +27,7 @@ if (Meteor.isClient) {
   };
 
   Template.main.events({
-    'click input' : function () {
+    'click button' : function () {
       Messages.insert({msg: "Hello from mobile UI at "+new Date()});
     }
   });
